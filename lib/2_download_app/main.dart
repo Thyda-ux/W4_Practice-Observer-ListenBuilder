@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'ui/providers/theme_color_provider.dart';
 import 'ui/screens/settings/settings_screen.dart';
@@ -6,7 +7,12 @@ import 'ui/screens/downloads/downloads_screen.dart';
 import 'ui/theme/theme.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeColorProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -17,12 +23,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  int _currentIndex = 1;
+  int _currentIndex = 1; // Keep as 1 to match starter code (Settings first)
 
-  final List<Widget> _pages =  [DownloadsScreen(), SettingsScreen()];
+  final List<Widget> _pages = [DownloadsScreen(), const SettingsScreen()];
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeColorProvider>();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: appTheme,
@@ -36,11 +44,11 @@ class _MyAppState extends State<MyApp> {
               _currentIndex = index;
             });
           },
-          selectedItemColor: currentThemeColor.color,
-          items: [
+          selectedItemColor: themeProvider.currentThemeColor.color,
+          items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Downloads'),
             BottomNavigationBarItem(
-              icon: Icon(Icons.search),
+              icon: Icon(Icons.settings),
               label: 'Settings',
             ),
           ],
