@@ -11,7 +11,7 @@ class ColorService extends ChangeNotifier {
     ColorType.blue: Colors.blue,
   };
 
-  /// Map to store tap counts per color (extensible approach from PDF)
+  /// Map to store tap counts per color 
   final Map<ColorType, int> _tapCounts = {
     for (var type in ColorType.values) type: 0,
   };
